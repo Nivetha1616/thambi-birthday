@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Thambi 💕</title>
+<style>
+  :root { --pink:#ff5f9e; --deep:#b92f70; --cream:#fff8fc; }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; min-height:100vh; display:flex; justify-content:center; align-items:center;
+    padding:18px; overflow-x:hidden; font-family: "Trebuchet MS", Arial, sans-serif;
+    color:#76264b; background:linear-gradient(145deg,#ffd6e8,#ffeaf3 45%,#e9ddff);
+  }
+  .phone {
+    width:min(100%,390px); min-height: min(820px, calc(100dvh - 36px)); position:relative;
+    overflow:hidden; border:7px solid #fff; border-radius:36px; background:var(--cream);
+    box-shadow:0 20px 60px #a43a6d30; isolation:isolate;
+  }
+  .screen { min-height: min(806px, calc(100dvh - 50px)); padding:34px 20px 28px; display:flex;
+    flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; z-index:1; }
+  .eyebrow { font-size:.78rem; letter-spacing:3px; text-transform:uppercase; color:#cf5c8b; }
+  h1 { font-size:clamp(2.25rem, 10vw, 3.1rem); line-height:1.08; margin:18px 0 12px; color:var(--deep); }
+  .subtitle { font-size:1rem; line-height:1.6; margin:0 0 24px; }
+  .big-heart { font-size:3.6rem; animation:pulse 1.5s infinite; filter:drop-shadow(0 5px 8px #ff8fbd60); }
+  button { border:0; border-radius:999px; padding:15px 28px; background:linear-gradient(135deg,#ff6fa8,#d94386);
+    color:white; font-size:1rem; font-weight:800; box-shadow:0 8px 18px #e85a9860; cursor:pointer; }
+  button:active { transform:scale(.97); }
+  .small-note { font-size:.8rem; color:#a45a7b; margin-top:14px; }
+  .hidden { display:none !important; }
+  .topline { margin:0 0 8px; font-size:.78rem; letter-spacing:2px; color:#c04e83; text-transform:uppercase; }
+  h2 { font-size:1.8rem; margin:6px 0 10px; color:var(--deep); }
+  .photo-grid { width:100%; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:9px; margin:16px 0 20px; }
+  .photo-card { aspect-ratio:3/4; padding:5px 5px 18px; background:white; border-radius:5px; box-shadow:0 4px 12px #873f651c;
+    transform:rotate(var(--tilt, 0deg)) scale(.7); opacity:0; transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .55s ease; }
+  .photo-card.show { opacity:1; transform:rotate(var(--tilt, 0deg)) scale(1); }
+  .photo-card img { width:100%; height:100%; object-fit:cover; display:block; background:#ffe0ed; }
+  .photo-card:nth-child(1), .photo-card:nth-child(7) { grid-column:span 1; }
+  .photo-card:nth-child(4) { grid-column:1; }
+  .photo-card:nth-child(5) { grid-column:2; }
+  .photo-card:nth-child(6) { grid-column:3; }
+  .photo-card span { display:block; font-size:.55rem; margin-top:4px; color:#b44a7a; }
+  .photo-tip { font-size:.75rem; line-height:1.4; color:#a45a7b; margin:0 0 14px; }
+  .wish-card { background:linear-gradient(145deg,#fff0f7,#f6edff); border:1px solid #ffd1e4; border-radius:22px; padding:22px 18px; margin:14px 0 22px; box-shadow:0 8px 24px #d35a8c12; }
+  .wish-card p { line-height:1.75; margin:0; font-size:1rem; }
+  .signature { font-weight:800; color:#d44786; margin-top:16px !important; }
+  .heart { position:absolute; bottom:-40px; z-index:0; pointer-events:none; opacity:.75; animation:floatUp linear forwards; }
+  .music-note { font-size:.75rem; color:#9c5c7b; margin-top:12px; }
+  @keyframes floatUp { from { transform:translateY(0) rotate(0deg); opacity:0; } 12% {opacity:.8;} to {transform:translateY(-900px) rotate(35deg); opacity:0;} }
+  @keyframes pulse { 0%,100% {transform:scale(1)} 50% {transform:scale(1.12)} }
+  @media (max-height:700px) { .screen { padding-top:22px; padding-bottom:20px; } h1 {font-size:2.25rem;} .big-heart {font-size:2.5rem;} }
+</style>
+</head>
+<body>
+<main class="phone" id="phone">
+  <section class="screen" id="welcome">
+    <div class="eyebrow">A little surprise for someone special</div>
+    <div class="big-heart">💗</div>
+    <h1>HAPPY BIRTHDAY<br>THAMBI💕❤️</h1>
+    <p class="subtitle">To my favourite little troublemaker,<br>today is all about YOU! 🎂✨</p>
+    <button id="surpriseBtn">🎁 Surprise</button>
+    <p class="small-note">Made with lots of love, just for you 💌</p>
+  </section>
+
+  <section class="screen hidden" id="photosScreen">
+    <div class="topline">Our little memories 📸</div>
+    <h2>9 photos, endless love 💕</h2>
+    <p class="photo-tip">A few favourite moments with my favourite Thambi.</p>
+    <div class="photo-grid" id="photoGrid"></div>
+    <p class="photo-tip" id="photoStatus">Your memories are appearing… ✨</p>
+    <button class="hidden" id="wishBtn">💌 Open your wish</button>
+    <p class="music-note" id="musicStatus">🎵 Birthday music is playing</p>
+  </section>
+
+  <section class="screen hidden" id="wishScreen">
+    <div class="big-heart">💖</div>
+    <div class="eyebrow">A wish from my heart</div>
+    <h2>Happy Birthday, Thambi! 🎂</h2>
+    <div class="wish-card">
+      <p>My dearest Thambi, ❤️<br><br>
+      You may annoy me a hundred times, but you will always have a special place in my heart. May your life be filled with happiness, laughter, good health, big dreams, and beautiful memories. Keep smiling and shining always. No matter how much you grow, you will always be my precious Thambi. 🥹💕<br><br>
+      Love you loads, today and always! 🎉💗</p>
+      <p class="signature">With all my love ❤️</p>
+    </div>
+    <button id="replayBtn">↻ Watch again</button>
+    <p class="small-note">You are loved more than words can say 💞</p>
+  </section>
+</main>
+
+<audio id="birthdayMusic" loop preload="auto">
+  <source src="Kallaliye%20Kallaliye%20Song%20_%20Fem.mp3" type="audio/mpeg">
+</audio>
+<script>
+const welcome = document.getElementById('welcome');
+const photosScreen = document.getElementById('photosScreen');
+const wishScreen = document.getElementById('wishScreen');
+const photoGrid = document.getElementById('photoGrid');
+const music = document.getElementById('birthdayMusic');
+const photoStatus = document.getElementById('photoStatus');
+const wishBtn = document.getElementById('wishBtn');
+
+const photos = ['pic1.jpeg','pic2.jpeg','pic3.jpeg','pic4.jpeg','pic5.jpeg','pic6.jpeg','pic7.jpeg','pic8.jpeg','pic9.png'];
+const captions = ['Little moments 💗','Big smiles ✨','Best memories 🫶','My Thambi ❤️','Always together 💕','Silly us 😄','Forever family 💖','Made of memories ✨','Always my favourite 💕'];
+const tilts = ['-3deg','2deg','-2deg','3deg','-2deg','2deg','-3deg','2deg','-2deg'];
+
+photos.forEach((photo, index) => {
+  const card = document.createElement('div');
+  card.className = 'photo-card';
+  card.style.setProperty('--tilt', tilts[index]);
+  const img = document.createElement('img');
+  img.src = photo;
+  img.alt = `Memory photo ${index + 1}`;
+  const label = document.createElement('span');
+  label.textContent = captions[index];
+  card.append(img, label);
+  photoGrid.appendChild(card);
+});
+
+let revealTimers = [];
+function clearTimers() { revealTimers.forEach(clearTimeout); revealTimers = []; }
+function showScreen(screen) {
+  [welcome, photosScreen, wishScreen].forEach(s => s.classList.add('hidden'));
+  screen.classList.remove('hidden');
+}
+document.getElementById('surpriseBtn').addEventListener('click', async () => {
+  clearTimers();
+  showScreen(photosScreen);
+  photoGrid.querySelectorAll('.photo-card').forEach(c => c.classList.remove('show'));
+  wishBtn.classList.add('hidden');
+  photoStatus.textContent = 'Your memories are appearing… ✨';
+  try {
+    await music.play();
+    document.getElementById('musicStatus').textContent = '🎵 Birthday music is playing';
+  } catch {
+    document.getElementById('musicStatus').textContent = '🎵 Tap again to play your song';
+  }
+  const cards = [...photoGrid.querySelectorAll('.photo-card')];
+  cards.forEach((card, index) => revealTimers.push(setTimeout(() => {
+    card.classList.add('show');
+    if (index === cards.length - 1) {
+      photoStatus.textContent = 'Nine memories, one very special Thambi 💕';
+      wishBtn.classList.remove('hidden');
+    }
+  }, 420 + index * 650)));
+});
+wishBtn.addEventListener('click', () => showScreen(wishScreen));
+document.getElementById('replayBtn').addEventListener('click', () => {
+  music.pause(); music.currentTime = 0;
+  showScreen(welcome);
+});
+
+// Small floating hearts on every screen.
+const phone = document.getElementById('phone');
+const hearts = ['💗','💕','❤️','💖','♡','💘'];
+function floatHeart() {
+  const heart = document.createElement('span');
+  heart.className = 'heart';
+  heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+  heart.style.left = (4 + Math.random() * 88) + '%';
+  heart.style.fontSize = (14 + Math.random() * 18) + 'px';
+  const duration = 5 + Math.random() * 4;
+  heart.style.animationDuration = duration + 's';
+  phone.appendChild(heart);
+  setTimeout(() => heart.remove(), duration * 1000);
+}
+setInterval(floatHeart, 550);
+</script>
+</body>
+</html>
